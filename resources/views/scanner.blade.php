@@ -72,6 +72,13 @@
 <div class="topbar">
     <img src="{{ asset('images/stec-logo.png') }}" class="logo" alt="Logo">
     <div class="title">RMDSF-STEC Scanner System</div>
+
+    <form action="{{ route('logout') }}" method="POST" class="ms-auto">
+        @csrf
+        <button type="submit" class="btn btn-sm btn-outline-light">
+            Log Out
+        </button>
+    </form>
 </div>
 
 <!-- CENTER CONTENT -->

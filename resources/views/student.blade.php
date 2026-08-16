@@ -110,9 +110,18 @@
             <div class="d-flex justify-content-between align-items-center">
                 <h3>Students List</h3>
 
-                <a href="{{ route('students.create') }}" class="btn btn-light">
-                    + Add Student
-                </a>
+                <div class="d-flex gap-2">
+                    <a href="{{ route('students.create') }}" class="btn btn-light">
+                        + Add Student
+                    </a>
+
+                    <form action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn btn-outline-light">
+                            Log Out
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
 
