@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignUuid('client_id');
             $table->text('scopes')->nullable();
             $table->boolean('revoked');
-            $table->dateTime('expires_at')->nullable();
+            $table->dateTimeTz('expires_at')->nullable();
         });
     }
 

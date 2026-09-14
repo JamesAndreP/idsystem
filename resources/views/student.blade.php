@@ -1,192 +1,142 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Students List</title>
+@extends('layouts.sidebar')
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+@section('title', 'Students List')
 
-    <style>
-        body {
-            background: linear-gradient(135deg, #4f46e5, #7c3aed);
-            min-height: 100vh;
-            padding: 40px 20px;
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
-        .container {
-            max-width: 1100px;
-        }
-
-        .card {
-            border: none;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-        }
-
-        .card-header {
-            background: #4f46e5;
-            color: #fff;
-            padding: 20px 25px;
-        }
-
-        .card-header h3 {
-            margin: 0;
-            font-weight: 600;
-        }
-
-        .table {
-            margin-bottom: 0;
-        }
-
-        .table thead {
-            background: #f8f9fa;
-        }
-
-        .table thead th {
-            font-weight: 600;
-            color: #555;
-            border-bottom: 2px solid #e9ecef;
-        }
-
-        .table tbody tr:hover {
-            background: #f5f3ff;
-        }
-
-        .btn-primary {
-            background: #4f46e5;
-            border: none;
-            border-radius: 8px;
-            padding: 8px 16px;
-        }
-
-        .btn-primary:hover {
-            background: #4338ca;
-        }
-
-        .btn-warning,
-        .btn-danger {
-            border-radius: 8px;
-        }
-
-        .badge {
-            font-size: 0.85rem;
-            padding: 6px 10px;
-        }
-
-        @media (max-width: 768px) {
-            .table-responsive {
-                font-size: 14px;
-            }
-
-            .card-header {
-                text-align: center;
-            }
-
-            .card-header .d-flex {
-                flex-direction: column;
-                gap: 10px;
-            }
-        }
-    </style>
-</head>
-<body>
-
+@section('content')
 @if(session('success'))
-<div class="container mb-3">
-    <div class="alert alert-success alert-dismissible fade show">
-        {{ session('success') }}
-        <button class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
+<div class="alert alert-success alert-dismissible fade show">
+    {{ session('success') }}
+    <button class="btn-close" data-bs-dismiss="alert"></button>
 </div>
 @endif
 
-<div class="container">
-    <div class="card">
+<div class="card" style="border: none; border-radius: 15px; overflow: hidden; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);">
 
-        <div class="card-header">
-            <div class="d-flex justify-content-between align-items-center">
-                <h3>Students List</h3>
+    <div class="card-header" style="background: #0f172a; color: #fff; padding: 20px 25px;">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+            <h3 style="margin: 0; font-weight: 600;">Students List</h3>
 
-                <a href="{{ route('students.create') }}" class="btn btn-light">
+            <div class="d-flex gap-2 align-items-center">
+                <div class="d-flex">
+                    <form action="{{ route('students.index') }}" method="GET" class="d-flex m-0">
+                        <input type="text" name="search" value="{{ $search ?? '' }}" placeholder="Search students..." class="form-control" style="border-radius: 8px 0 0 8px; padding: 8px 12px; border: 1px solid #374151; color: #6c6f72; min-width: 200px; height: 38px;">
+                        <button type="submit" class="btn btn-primary" style="border-radius: 0 8px 8px 0; padding: 8px 16px; background: #4f46e5; border: none; color: white; height: 38px;">
+                            🔍
+                        </button>
+                    </form>
+                </div>
+                @if($search)
+                    <a href="{{ route('students.index') }}" class="btn btn-secondary" style="background: #6b7280; border: none; border-radius: 8px; padding: 8px 16px; color: white; height: 38px;">
+                        ✕ Clear
+                    </a>
+                @endif
+                <a href="{{ route('students.create') }}" class="btn btn-light" style="background: #4f46e5; border: none; border-radius: 8px; padding: 8px 16px; color: white; height: 38px;">
                     + Add Student
                 </a>
             </div>
         </div>
+    </div>
 
-        <div class="card-body p-0">
+    <div class="card-body p-0" style="background: #1f2937;">
 
-            <div class="table-responsive">
-                <table class="table table-hover align-middle">
-                    <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>First Name</th>
-                        <th>Middle Name</th>
-                        <th>Last Name</th>
-                        <th>Section</th>
-                        <th>LRN</th>
-                        <th width="170">Actions</th>
-                    </tr>
-                    </thead>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle" style="margin-bottom: 0; color: #1f1f1f">
+                <thead style="background: #0f172a;">
+                <tr>
+                    <th style="font-weight: 600; color: #1f1f1f border-bottom: 2px solid #374151;">#</th>
+                    <th style="font-weight: 600; color: #1f1f1f border-bottom: 2px solid #374151;">First Name</th>
+                    <th style="font-weight: 600; color: #1f1f1f border-bottom: 2px solid #374151;">Middle Name</th>
+                    <th style="font-weight: 600; color: #1f1f1f border-bottom: 2px solid #374151;">Last Name</th>
+                    <th style="font-weight: 600; color: #1f1f1f border-bottom: 2px solid #374151;">Grade & Section</th>
+                    <th style="font-weight: 600; color: #1f1f1f border-bottom: 2px solid #374151;">LRN</th>
+                    <th width="170" style="font-weight: 600; color: #1f1f1f border-bottom: 2px solid #374151;">Actions</th>
+                </tr>
+                </thead>
 
-                    <tbody>
+                <tbody>
 
-                    @forelse($students as $student)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
+                @forelse($students as $student)
+                    <tr style="transition: background 0.2s;" onmouseover="this.style.background='#374151'" onmouseout="this.style.background='transparent'">
+                        <td>{{ ($students->currentPage() - 1) * $students->perPage() + $loop->iteration }}</td>
 
-                            <td>{{ $student->first_name }}</td>
+                        <td>{{ $student->first_name }}</td>
 
-                            <td>
-                                {{ $student->middle_name ?: '-' }}
-                            </td>
+                        <td>
+                            {{ $student->middle_name ?: '-' }}
+                        </td>
 
-                            <td>{{ $student->last_name }}</td>
+                        <td>{{ $student->last_name }}</td>
 
-                            <td>
-                                <span class="badge bg-primary">
-                                    {{ $student->section }}
+                        <td>
+                            @if($student->currentGradeAndSection)
+                                <span class="badge bg-primary" style="font-size: 0.85rem; padding: 6px 10px;">
+                                    {{ $student->currentGradeAndSection->grade_level }} - {{ $student->currentGradeAndSection->section }}
                                 </span>
-                            </td>
+                            @else
+                                <span class="text-muted">No grade assigned</span>
+                            @endif
+                        </td>
 
-                            <td>{{ $student->lrn }}</td>
+                        <td>{{ $student->lrn }}</td>
 
-                            <td>
-                                <a href="{{ route('students.generateQr', $student->id) }}"
-                                   class="btn btn-warning btn-sm">
-                                    View / Print QR
-                                </a>
-                            </td>
-                        </tr>
-                    @empty
+                        <td>
+                            <a href="{{ route('students.generateQr', $student->id) }}"
+                               class="btn btn-warning btn-sm" style="border-radius: 8px; background: #f59e0b; border: none;">
+                                View / Print QR
+                            </a>
+                        </td>
+                    </tr>
+                @empty
 
-                        <tr>
-                            <td colspan="7" class="text-center py-5 text-muted">
-                                No students found.
-                            </td>
-                        </tr>
+                    <tr>
+                        <td colspan="7" class="text-center py-5 text-muted">
+                            No students found.
+                        </td>
+                    </tr>
 
-                    @endforelse
+                @endforelse
 
-                    </tbody>
-                </table>
-            </div>
-
+                </tbody>
+            </table>
         </div>
 
-        @if(method_exists($students, 'links'))
-            <div class="card-footer bg-white">
-                {{ $students->links() }}
-            </div>
-        @endif
-
     </div>
+
+    @if($students->hasPages())
+        <div class="card-footer" style="background: #0f172a; color: #e5e7eb; padding: 20px 25px;">
+            {{ $students->appends(request()->query())->links() }}
+        </div>
+    @endif
+
 </div>
+@endsection
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<style>
+    .pagination {
+        margin: 0;
+    }
 
-</body>
-</html>
+    .page-link {
+        background-color: #1f2937;
+        border-color: #374151;
+        color: #e5e7eb;
+    }
+
+    .page-link:hover {
+        background-color: #374151;
+        border-color: #4f46e5;
+        color: white;
+    }
+
+    .page-item.active .page-link {
+        background-color: #4f46e5;
+        border-color: #4f46e5;
+        color: white;
+    }
+
+    .page-item.disabled .page-link {
+        background-color: #1f2937;
+        border-color: #374151;
+        color: #6b7280;
+    }
+</style>

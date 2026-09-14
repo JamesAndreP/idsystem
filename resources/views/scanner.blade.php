@@ -21,14 +21,23 @@
             padding: 15px 25px;
             display: flex;
             align-items: center;
-            justify-content: flex-start;
             background: #0f172a;
             box-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
 
+        .topbar .logo-container {
+            display: flex;
+            align-items: center;
+            flex: 1;
+        }
+
+        .topbar .logout-container {
+            margin-left: auto;
+        }
+
         .logo {
-            height: 200px;
-            width: 200px;
+            height: 60px;
+            width: 60px;
             object-fit: contain;
             margin-right: 12px;
         }
@@ -36,6 +45,33 @@
         .title {
             font-size: 18px;
             font-weight: bold;
+        }
+
+        .topbar .btn-danger {
+            padding: 8px 16px;
+            border-radius: 8px;
+            background: #ef4444;
+            border: none;
+            color: white;
+        }
+
+        .topbar .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .back-button {
+            font-size: 32px;
+            color: white;
+            text-decoration: none;
+            margin-right: 15px;
+            cursor: pointer;
+            transition: color 0.2s;
+            line-height: 1;
+            font-weight: bold;
+        }
+
+        .back-button:hover {
+            color: #4f46e5;
         }
 
         /* CENTER BOX */
@@ -70,8 +106,17 @@
 
 <!-- TOP BAR -->
 <div class="topbar">
-    <img src="{{ asset('images/stec-logo.png') }}" class="logo" alt="Logo">
-    <div class="title">RMDSF-STEC Scanner System</div>
+    <div class="logo-container">
+        <a href="{{ route('dashboard') }}" class="back-button">←</a>
+        <img src="{{ asset('images/stec-logo.png') }}" class="logo" alt="Logo">
+        <div class="title">RMDSF-STEC Scanner System</div>
+    </div>
+    <div class="logout-container">
+        <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+            @csrf
+            <button type="submit" class="btn btn-danger btn-sm">Logout</button>
+        </form>
+    </div>
 </div>
 
 <!-- CENTER CONTENT -->
@@ -126,7 +171,7 @@ input.addEventListener('keydown', function(e) {
                     <h3>Welcome!</h3>
                     <hr>
                     <p><strong>Name:</strong> ${s.first_name} ${s.middle_name ?? ''} ${s.last_name}</p>
-                    <p><strong>Section:</strong> ${s.section}</p>
+                    <p><strong>Section:</strong> ${s.current_grade_and_section[0].grade_level} - ${s.current_grade_and_section[0].section}</p>
                     <p><strong>LRN:</strong> ${s.lrn}</p>
                 `;
             } else {

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->char('id', 80)->primary();
             $table->char('access_token_id', 80)->index();
             $table->boolean('revoked');
-            $table->dateTime('expires_at')->nullable();
+            $table->dateTimeTz('expires_at')->nullable();
         });
     }
 

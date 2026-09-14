@@ -18,9 +18,9 @@ return new class extends Migration
             $table->char('user_code', 8)->unique();
             $table->text('scopes');
             $table->boolean('revoked');
-            $table->dateTime('user_approved_at')->nullable();
-            $table->dateTime('last_polled_at')->nullable();
-            $table->dateTime('expires_at')->nullable();
+            $table->dateTimeTz('user_approved_at')->nullable();
+            $table->dateTimeTz('last_polled_at')->nullable();
+            $table->dateTimeTz('expires_at')->nullable();
         });
     }
 
