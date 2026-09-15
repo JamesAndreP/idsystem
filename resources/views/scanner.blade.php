@@ -80,6 +80,7 @@
             justify-content: center;
             align-items: center;
             height: calc(50vh - 70px);
+            flex-direction: column;
         }
 
         .box {
@@ -121,6 +122,10 @@
 
 <!-- CENTER CONTENT -->
 <div class="wrapper">
+    <div style="text-align: center; margin-bottom: 20px;">
+        <div id="clock" style="font-size: 42px; font-weight: bold; color: #e5e7eb;"></div>
+        <div style="font-size: 14px; color: #9ca3af;">Philippines Time</div>
+    </div>
     <div class="box">
 
         <h2>🎓 Stecians</h2>
@@ -140,6 +145,24 @@ let result = document.getElementById('result');
 
 // store timeout globally
 let resetTimer = null;
+
+// Real-time clock for Philippines timezone
+function updateClock() {
+    const now = new Date();
+    const options = {
+        timeZone: 'Asia/Manila',
+        hour: 'numeric',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true
+    };
+    const timeString = now.toLocaleTimeString('en-US', options);
+    document.getElementById('clock').textContent = timeString;
+}
+
+// Update clock every second
+setInterval(updateClock, 1000);
+updateClock(); // Initial call
 
 // always focus (scanner-friendly)
 setInterval(() => input.focus(), 500);

@@ -93,10 +93,23 @@ class GradeAndSectionController extends Controller
                 if ($attendance) {
                     // Determine if late based on scan time
                     $scanTime = $attendance->scanned_at->setTimezone($timezone)->format('H:i');
+                    $scanTimeFormatted = $attendance->scanned_at->setTimezone($timezone)->format('h:i:s A');
                     if ($scanTime > substr($lateTime, 0, 5)) {
-                        $late->push($student);
+                        // Calculate elapsed minutes
+                        $lateTimeCarbon = \Carbon\Carbon::createFromFormat('H:i', substr($lateTime, 0, 5), $timezone);
+                        $scanTimeCarbon = $attendance->scanned_at->setTimezone($timezone);
+                        $elapsedMinutes = $lateTimeCarbon->diffInMinutes($scanTimeCarbon);
+                        
+                        $late->push([
+                            'student' => $student,
+                            'scan_time' => $scanTimeFormatted,
+                            'elapsed_minutes' => ceil($elapsedMinutes)
+                        ]);
                     } else {
-                        $present->push($student);
+                        $present->push([
+                            'student' => $student,
+                            'scan_time' => $scanTimeFormatted
+                        ]);
                     }
                 } else {
                     $absent->push($student);
@@ -106,7 +119,7 @@ class GradeAndSectionController extends Controller
             }
         }
 
-        return view('attendance', compact('gradeAndSection', 'present', 'late', 'absent', 'today', 'lateTime'));
+        return view('attendance', compact('gradeAndSection', 'present', 'late', 'absent', 'today', 'lateTime', 'timezone'));
     }
 
     public function destroy($id)

@@ -24,6 +24,62 @@
             display: flex;
             flex-direction: column;
             border-right: 1px solid #374151;
+            transition: width 0.3s ease;
+            position: relative;
+        }
+
+        .sidebar.collapsed {
+            width: 60px;
+        }
+
+        .sidebar.collapsed .sidebar-header h2,
+        .sidebar.collapsed .sidebar-menu a span,
+        .sidebar.collapsed .sidebar-footer .btn-danger {
+            display: none;
+        }
+
+        .sidebar.collapsed .sidebar-menu a {
+            justify-content: center;
+            padding: 12px;
+        }
+
+        .sidebar.collapsed .sidebar-footer form {
+            display: flex;
+            justify-content: center;
+        }
+
+        .sidebar-toggle {
+            position: absolute;
+            top: 10px;
+            right: -15px;
+            width: 30px;
+            height: 30px;
+            background: #4f46e5;
+            border: none;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            transition: all 0.2s ease;
+            padding: 0;
+        }
+
+        .sidebar-toggle:hover {
+            background: #4338ca;
+            transform: scale(1.1);
+        }
+
+        .sidebar-toggle svg {
+            width: 16px;
+            height: 16px;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar.collapsed .sidebar-toggle svg {
+            transform: rotate(180deg);
         }
 
         .sidebar-header {
@@ -43,7 +99,8 @@
         }
 
         .sidebar-menu a {
-            display: block;
+            display: flex;
+            align-items: center;
             padding: 12px 15px;
             color: #e5e7eb;
             text-decoration: none;
@@ -108,26 +165,32 @@
 </head>
 <body>
 
-    <div class="sidebar">
+    <div class="sidebar" id="sidebar">
+        <button class="sidebar-toggle" id="sidebarToggle">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+        </button>
+        
         <div class="sidebar-header">
             <h2>Admin Panel</h2>
         </div>
 
         <div class="sidebar-menu">
             <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
-                📊 Dashboard
+                📊 <span>Dashboard</span>
             </a>
             <a href="{{ route('students.index') }}" class="{{ request()->routeIs('students.index') ? 'active' : '' }}">
-                👥 Student List
+                👥 <span>Student List</span>
             </a>
             <a href="{{ route('grade-sections.index') }}" class="{{ request()->routeIs('grade-sections.index') || request()->routeIs('grade-sections.create') ? 'active' : '' }}">
-                🎓 Grade Levels
+                🎓 <span>Grade Levels</span>
             </a>
             <a href="{{ route('students.scanner') }}" class="{{ request()->routeIs('students.scanner') ? 'active' : '' }}">
-                📱 Portal
+                📱 <span>Portal</span>
             </a>
             <a href="{{ route('settings.index') }}" class="{{ request()->routeIs('settings.index') ? 'active' : '' }}">
-                ⚙️ Settings
+                ⚙️ <span>Settings</span>
             </a>
         </div>
 
@@ -135,7 +198,7 @@
             <form action="{{ route('logout') }}" method="POST">
                 @csrf
                 <button type="submit" class="btn btn-danger w-100">
-                    Logout
+                    <span>Logout</span>
                 </button>
             </form>
         </div>
@@ -146,6 +209,15 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+
+        sidebarToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('collapsed');
+        });
+    </script>
 
 </body>
 </html>

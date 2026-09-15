@@ -24,9 +24,11 @@
                     <p class="text-center py-4 text-muted">No students present</p>
                 @else
                     <ul class="list-group list-group-flush">
-                        @foreach($present as $student)
-                            <li class="list-group-item" style="background: #1f2937; border-color: #374151; color: #e5e7eb;">
-                                {{ $student->first_name }} {{ $student->middle_name }} {{ $student->last_name }}
+                        @foreach($present as $item)
+                            <li class="list-group-item" style="background: #1f2937; border-color: #374151; color: #e5e7eb; display: flex; flex-direction: row; align-items: center; gap: 5px;">
+                                <div>{{ $item['student']->first_name }} {{ $item['student']->middle_name }} {{ $item['student']->last_name }}</div>
+                                <div>-</div>
+                                <div style="color: #9ca3af;">{{ $item['scan_time'] }}</div>
                             </li>
                         @endforeach
                     </ul>
@@ -45,9 +47,13 @@
                     <p class="text-center py-4 text-muted">No students late</p>
                 @else
                     <ul class="list-group list-group-flush">
-                        @foreach($late as $student)
-                            <li class="list-group-item" style="background: #1f2937; border-color: #374151; color: #e5e7eb;">
-                                {{ $student->first_name }} {{ $student->middle_name }} {{ $student->last_name }}
+                        @foreach($late as $item)
+                            <li class="list-group-item" style="background: #1f2937; border-color: #374151; color: #e5e7eb; display: flex; flex-direction: row; align-items: center; gap: 5px;">
+                                <div>{{ $item['student']->first_name }} {{ $item['student']->middle_name }} {{ $item['student']->last_name }}</div>
+                                <div>-</div>
+                                <div style="color: #9ca3af;">{{ $item['scan_time'] }}</div>
+                                <div>-</div>
+                                <div style="color: #f59e0b; font-weight: 600;">{{ $item['elapsed_minutes'] }} min late</div>
                             </li>
                         @endforeach
                     </ul>
