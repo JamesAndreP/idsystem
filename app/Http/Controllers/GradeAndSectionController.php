@@ -59,6 +59,35 @@ class GradeAndSectionController extends Controller
         return redirect()->route('grade-sections.index')->with('success', 'Grade and section created successfully!');
     }
 
+    public function edit($id)
+    {
+        $gradeAndSection = GradeAndSection::findOrFail($id);
+        return view('edit-grade-section', compact('gradeAndSection'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $gradeAndSection = GradeAndSection::findOrFail($id);
+
+        $validator = Validator::make($request->all(), [
+            'grade_level' => 'required|string|max:50',
+            'section' => 'required|string|max:50',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $gradeAndSection->update([
+            'grade_level' => $request->grade_level,
+            'section' => $request->section,
+        ]);
+
+        return redirect()->route('grade-sections.index')->with('success', 'Grade and section updated successfully!');
+    }
+
     public function showAttendance($id)
     {
         $gradeAndSection = GradeAndSection::with(['students', 'students.currentGradeAndSection'])->findOrFail($id);

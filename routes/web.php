@@ -22,11 +22,16 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/students/{student}/generate-qr', [StudentsController::class, 'generateQr'])
         ->name('students.generateQr');
     Route::post('/add-student', [StudentsController::class, 'store'])->name('students.store');
+    Route::get('/students/{student}/edit', [StudentsController::class, 'edit'])->name('students.edit');
+    Route::put('/students/{student}', [StudentsController::class, 'update'])->name('students.update');
+    Route::delete('/students/{student}', [StudentsController::class, 'destroy'])->name('students.destroy');
     Route::get('/scanner', [StudentsController::class, 'scannerPage'])->name('students.scanner');
     Route::post('/scanner/lookup', [StudentsController::class, 'lookupStudent'])->name('students.lookup');
     Route::get('/grade-sections', [GradeAndSectionController::class, 'index'])->name('grade-sections.index');
     Route::get('/grade-sections/create', [GradeAndSectionController::class, 'showCreate'])->name('grade-sections.create');
     Route::post('/grade-sections', [GradeAndSectionController::class, 'store'])->name('grade-sections.store');
+    Route::get('/grade-sections/{id}/edit', [GradeAndSectionController::class, 'edit'])->name('grade-sections.edit');
+    Route::put('/grade-sections/{id}', [GradeAndSectionController::class, 'update'])->name('grade-sections.update');
     Route::get('/grade-sections/{id}/attendance', [GradeAndSectionController::class, 'showAttendance'])->name('grade-sections.attendance');
     Route::delete('/grade-sections/{id}', [GradeAndSectionController::class, 'destroy'])->name('grade-sections.destroy');
     Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');

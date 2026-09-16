@@ -47,7 +47,7 @@
                     <th style="font-weight: 600; color: #1f1f1f; border-bottom: 2px solid #374151;">Grade Level</th>
                     <th style="font-weight: 600; color: #1f1f1f; border-bottom: 2px solid #374151;">Section</th>
                     <th style="font-weight: 600; color: #1f1f1f; border-bottom: 2px solid #374151;">Students Count</th>
-                    <th width="170" style="font-weight: 600; color: #1f1f1f; border-bottom: 2px solid #374151;">Actions</th>
+                    <th width="220" style="font-weight: 600; color: #1f1f1f; border-bottom: 2px solid #374151;">Actions</th>
                 </tr>
                 </thead>
 
@@ -68,9 +68,12 @@
                         <td>{{ $gradeAndSection->students()->count() }}</td>
 
                         <td>
-                            <div class="d-flex gap-2">
-                                <a href="{{ route('grade-sections.attendance', $gradeAndSection->id) }}" class="btn btn-primary btn-sm" style="border-radius: 8px; background: #4f46e5; border: none;">
-                                    View Attendance
+                            <div class="d-flex gap-1">
+                                <a href="{{ route('grade-sections.edit', $gradeAndSection->id) }}" class="btn btn-primary btn-sm" style="border-radius: 8px; background: #4f46e5; border: none;">
+                                    Edit
+                                </a>
+                                <a href="{{ route('grade-sections.attendance', $gradeAndSection->id) }}" class="btn btn-warning btn-sm" style="border-radius: 8px; background: #f59e0b; border: none;">
+                                    Attendance
                                 </a>
                                 <form action="{{ route('grade-sections.destroy', $gradeAndSection->id) }}" method="POST" style="display: inline;">
                                     @csrf

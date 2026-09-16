@@ -48,7 +48,7 @@ class StudentsController extends Controller
             'first_name' => 'required|string|max:255',
             'middle_name' => 'nullable|string|max:255',
             'last_name' => 'required|string|max:255',
-            'lrn' => 'required|string|max:255',
+            'lrn' => 'required|string|max:255|unique:students,lrn',
             'grade_and_section_id' => 'required|exists:grade_and_sections,id',
         ]);
 
@@ -72,6 +72,58 @@ class StudentsController extends Controller
         $student->gradeAndSections()->attach($request->grade_and_section_id, ['schoolyear' => $schoolyear]);
 
         return redirect()->route('students.index')->with('success', 'Student created successfully!');
+    }
+
+    public function edit($id)
+    {
+        $student = Student::with('currentGradeAndSection')->findOrFail($id);
+        $gradeAndSections = GradeAndSection::orderBy('grade_level')->orderBy('section')->get();
+        return view('editstudent', compact('student', 'gradeAndSections'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $student = Student::findOrFail($id);
+
+        $validator = Validator::make($request->all(), [
+            'first_name' => 'required|string|max:255',
+            'middle_name' => 'nullable|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'lrn' => 'required|string|max:255|unique:students,lrn,' . $id,
+            'grade_and_section_id' => 'required|exists:grade_and_sections,id',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $lrn_hashed = $request->last_name . $request->lrn;
+
+        $student->update([
+            'first_name' => $request->first_name,
+            'middle_name' => $request->middle_name,
+            'last_name' => $request->last_name,
+            'lrn' => $request->lrn,
+            'lrn_hashed' => $lrn_hashed,
+        ]);
+
+        $schoolyear = Setting::first()->schoolyear ?? '2026-2027';
+
+        // Update grade and section assignment
+        $student->gradeAndSections()->wherePivot('schoolyear', $schoolyear)->detach();
+        $student->gradeAndSections()->attach($request->grade_and_section_id, ['schoolyear' => $schoolyear]);
+
+        return redirect()->route('students.index')->with('success', 'Student updated successfully!');
+    }
+
+    public function destroy($id)
+    {
+        $student = Student::findOrFail($id);
+        $student->delete();
+
+        return redirect()->route('students.index')->with('success', 'Student deleted successfully!');
     }
 
     public function generateQr(int $id)

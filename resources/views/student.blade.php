@@ -43,13 +43,13 @@
             <table class="table table-hover align-middle" style="margin-bottom: 0; color: #1f1f1f">
                 <thead style="background: #0f172a;">
                 <tr>
-                    <th style="font-weight: 600; color: #1f1f1f border-bottom: 2px solid #374151;">#</th>
-                    <th style="font-weight: 600; color: #1f1f1f border-bottom: 2px solid #374151;">First Name</th>
-                    <th style="font-weight: 600; color: #1f1f1f border-bottom: 2px solid #374151;">Middle Name</th>
-                    <th style="font-weight: 600; color: #1f1f1f border-bottom: 2px solid #374151;">Last Name</th>
-                    <th style="font-weight: 600; color: #1f1f1f border-bottom: 2px solid #374151;">Grade & Section</th>
-                    <th style="font-weight: 600; color: #1f1f1f border-bottom: 2px solid #374151;">LRN</th>
-                    <th width="170" style="font-weight: 600; color: #1f1f1f border-bottom: 2px solid #374151;">Actions</th>
+                    <th style="font-weight: 600; color: #1f1f1f; border-bottom: 2px solid #374151;">#</th>
+                    <th style="font-weight: 600; color: #1f1f1f; border-bottom: 2px solid #374151;">First Name</th>
+                    <th style="font-weight: 600; color: #1f1f1f; border-bottom: 2px solid #374151;">Middle Name</th>
+                    <th style="font-weight: 600; color: #1f1f1f; border-bottom: 2px solid #374151;">Last Name</th>
+                    <th style="font-weight: 600; color: #1f1f1f; border-bottom: 2px solid #374151;">Grade & Section</th>
+                    <th style="font-weight: 600; color: #1f1f1f; border-bottom: 2px solid #374151;">LRN</th>
+                    <th width="220" style="font-weight: 600; color: #1f1f1f; border-bottom: 2px solid #374151;">Actions</th>
                 </tr>
                 </thead>
 
@@ -80,10 +80,24 @@
                         <td>{{ $student->lrn }}</td>
 
                         <td>
-                            <a href="{{ route('students.generateQr', $student->id) }}"
-                               class="btn btn-warning btn-sm" style="border-radius: 8px; background: #f59e0b; border: none;">
-                                View / Print QR
-                            </a>
+                            <div class="d-flex gap-1">
+                                <a href="{{ route('students.edit', $student->id) }}"
+                                   class="btn btn-primary btn-sm" style="border-radius: 8px; background: #4f46e5; border: none;">
+                                    Edit
+                                </a>
+                                <a href="{{ route('students.generateQr', $student->id) }}"
+                                   class="btn btn-warning btn-sm" style="border-radius: 8px; background: #f59e0b; border: none;">
+                                    QR
+                                </a>
+                                <form action="{{ route('students.destroy', $student->id) }}" method="POST" style="display: inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm" style="border-radius: 8px; background: #ef4444; border: none;"
+                                            onclick="return confirm('Are you sure you want to delete this student?');">
+                                        Delete
+                                    </button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                 @empty
